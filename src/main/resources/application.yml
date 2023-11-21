@@ -5,5 +5,33 @@ micronaut:
     static-resources:
       default:
         enabled: true
-        mapping: "/static/**"
+        mapping: "/**"
         paths: classpath:static
+  server:
+    port : 80
+    dual-protocol: true
+    ssl:
+      enabled: true
+      port: 443
+    http-to-https-redirect: true
+acme:
+  enabled: true
+  tos-agree: true
+  cert-location: /etc/maximserver
+  domains:
+    - maximserver.ru
+  refresh:
+    delay: 1m
+    frequency: 24h
+  domain-key: file:/etc/maximserver/domainKey.pem
+  account-key: file:/etc/maximserver/accountKey.pem
+  acme-server: https://acme-v02.api.letsencrypt.org/directory
+  order:
+    pause: 3s
+    refresh-attempts: 10
+  auth:
+    pause: 1m
+    refresh-attempts: 10
+  renew-within: 30
+  challenge-type: tls
+  timeout: 10s
