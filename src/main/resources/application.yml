@@ -8,14 +8,19 @@ micronaut:
         mapping: "/**"
         paths: classpath:static
   server:
-    port : 80
-    dual-protocol: true
+    port : ${MXS_HTTP_PORT:80}
+    dual-protocol: ${MXS_DUAL_PROTOCOL:true}
     ssl:
-      enabled: true
-      port: 443
+      enabled: ${MXS_SSL_ENABLED:true}
+      port: ${MXS_HTTPS_PORT:443}
     http-to-https-redirect: true
+  http:
+    services:
+      vk:
+        url: https://id.vk.ru
+        client-id: 54368087
 acme:
-  enabled: true
+  enabled: ${MXS_ACME_ENABLED:true}
   tos-agree: true
   cert-location: /etc/maximserver
   domains:
@@ -35,3 +40,11 @@ acme:
   renew-within: 30
   challenge-type: tls
   timeout: 10s
+logger:
+  levels:
+    # Set the logging level for the specific package where your client interface resides
+    com.vasmax.auth: DEBUG
+    # Enable debug logs for the core Micronaut HTTP client infrastructure
+    io.micronaut.http.client: DEBUG
+    # For highly detailed request/response headers and bodies (massive output)
+    io.micronaut.http.client.netty: TRACE
