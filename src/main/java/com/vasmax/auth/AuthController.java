@@ -18,16 +18,20 @@ public class AuthController {
 
     private final VkClient vkClient;
 
+    private final VkClientLowLevel vkClientLowLevel;
+
     //@Value("${micronaut.http.services.vk.client-id}")
     private final String clientId;  //"54368087";
 
     AuthController(VkClient vkClient,
+                   VkClientLowLevel vkClientLowLevel,
                    @Value("${micronaut.http.services.vk.client-id}") String clientId) {
         this.vkClient = vkClient;
+        this.vkClientLowLevel = vkClientLowLevel;
         this.clientId = clientId;
     }
 
-    @Get("/tokenAcquire")
+    @Get("/token11")
     public HttpResponse<?> getToken(HttpRequest<?> request) {
         request.getCookies().forEach((name, cookie) -> {
             log.info("Cookie name: {} = {}", name, cookie.getValue());
@@ -41,7 +45,7 @@ public class AuthController {
         return HttpResponse.ok("ok");
     }
 
-    @Get("/auth")
+    @Get("/auth11")
     public Mono<GetTokenResponse> auth(HttpRequest<?> request) {
         request.getCookies().forEach((name, cookie) -> {
             log.info("Cookie name: {} = {}", name, cookie.getValue());
@@ -57,17 +61,17 @@ public class AuthController {
             String state = request.getParameters().get("state");
             String device_id = request.getParameters().get("device_id");
             Optional<String> codeVerifier = request.getCookies().get("vkid_sdk:codeVerifier",  String.class);
-        String redirectUri = "https://maxmiracle.ru/auth";
+        String redirectUri = "https://maxmiracle.ru/token";
         log.info("RedirectAuth code: {}, codeVerifier: {}, device_id: {}, state: {}, redirectUri: {}", code, codeVerifier, device_id, state, redirectUri);
         String body = "grant_type=authorization_code&" +
                 "code_verifier=" + codeVerifier.orElse("codeVerifier") + "&" +
-                "redirect_uri=" + URLEncoder.encode(redirectUri, StandardCharsets.UTF_8) + "&" +
                 "code=" + code + "&" +
                 "client_id=" + clientId + "&" +
                 "device_id=" + device_id + "&" +
-                "state=" + state;
+                "state=" + state + "&" +
+                "redirect_uri=" + URLEncoder.encode(redirectUri, StandardCharsets.UTF_8);
         log.info("body: {}", body);
-        return Mono.from(vkClient.auth( body))
+        return Mono.from(vkClientLowLevel.auth( body))
                 .doOnNext(log::info)
                 .map(GetTokenResponse::new);
     }

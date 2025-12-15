@@ -14,3 +14,4 @@ out/
 .classpath
 .factorypath
 /maximserver/
+/src/main/resources/static/**
