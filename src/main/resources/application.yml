@@ -14,11 +14,14 @@ micronaut:
       enabled: ${MXS_SSL_ENABLED:true}
       port: ${MXS_HTTPS_PORT:443}
     http-to-https-redirect: true
+    cors:
+      enabled: true
+      allow-origins: "*"
   http:
     services:
       vk:
         url: https://id.vk.ru
-        client-id: 54368087
+        client-id: ${MXS_CLIENT_ID:54368087}
 acme:
   enabled: ${MXS_ACME_ENABLED:true}
   tos-agree: true
@@ -48,3 +51,4 @@ logger:
     io.micronaut.http.client: DEBUG
     # For highly detailed request/response headers and bodies (massive output)
     io.micronaut.http.client.netty: TRACE
+    com.vasmax.security.VkTokenValidator : DEBUG

@@ -1,5 +1,6 @@
 package com.vasmax.auth;
 
+import com.vasmax.security.VkUserInfo;
 import io.micronaut.core.async.annotation.SingleResult;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
@@ -15,4 +16,9 @@ public interface VkClient {
     @SingleResult
     Publisher<String> auth(@Body String body);
 
+    @Post(uri = "/oauth2/user_info",
+            produces = MediaType.APPLICATION_FORM_URLENCODED, // на входе форма с параметрами
+            consumes = MediaType.APPLICATION_JSON)
+    @SingleResult
+    Publisher<VkUserInfo> userInfo(@Body String body);
 }

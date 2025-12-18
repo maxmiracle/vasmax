@@ -52,6 +52,6 @@ gradle shadowJar -x test
 
 #### Собрать новую версию докера с сайтом.
 ```shell
-docker build --platform linux/amd64 -t maxmiracle/test1:21 .
-docker push maxmiracle/test1:21
+docker build --platform linux/amd64 -t maxmiracle/test1:25 .
+docker push maxmiracle/test1:25
 ```
