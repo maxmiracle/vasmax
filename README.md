@@ -35,23 +35,20 @@ $ docker run -d \
 portainer/portainer-ce:latest
 ```
 
-#### Скопировать в католог static собранный сайт - obsolete
-```shell
-cp -a ../vasmax-site/build/** ./src/main/resources/static
-```
-
 #### Скопировать в католог static собранный сайт - vite, react 19.2
 ```shell
+rm ./src/main/resources/static -r
+mkdir ./src/main/resources/static
 cp -a ../vasmax-vk/dist/** ./src/main/resources/static
 ```
 
 #### Собрать приложение
 ```shell
-gradle shadowJar -x test
+gradle clean shadowJar -x test
 ```
 
 #### Собрать новую версию докера с сайтом.
 ```shell
-docker build --platform linux/amd64 -t maxmiracle/test1:25 .
-docker push maxmiracle/test1:25
+docker build --platform linux/amd64 -t maxmiracle/test1:31 .
+docker push maxmiracle/test1:31
 ```

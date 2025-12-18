@@ -3,10 +3,24 @@ micronaut:
     name: vasmax
   router:
     static-resources:
+      intro:
+        paths:
+          - classpath:static/
+        mapping: "/intro"
       default:
-        enabled: true
+        paths:
+          - classpath:static
         mapping: "/**"
-        paths: classpath:static
+        enabled: true
+  security:
+    enabled: true
+    intercept-url-map:
+      # Allow anonymous access to all resources under /
+      - pattern: "/**"
+        httpMethod: GET
+        access:
+          - "isAnonymous()"
+      # Ensure other paths remain secured by default (no explicit rule needed)
   server:
     port : ${MXS_HTTP_PORT:80}
     dual-protocol: ${MXS_DUAL_PROTOCOL:true}
